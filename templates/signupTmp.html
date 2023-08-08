@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/theme.css') }}">
+</head>
+<body>
+    <h1>Sign up</h1>
+
+    <form action="/api/signup" method="post">
+        <label for="username">Username: </label>
+        <input type="text" name="username" id="username">
+
+        <label for="password">Password: </label>
+        <input type="password" name="password" id="password">
+
+        <label for="grade">What is your grade/education level: </label>
+        <select name="grade" id="grade-selector">
+            <option value="5th-or-below">5th grade or below</option>
+            <option value="6th">6th grade</option>
+            <option value="7th">7th grade</option>
+            <option value="8th">8th grade</option>
+            <option value="9th">9th grade</option>
+            <option value="10th">10th grade</option>
+            <option value="11th">11th grade</option>
+            <option value="12th">12th grade</option>
+            <option value="beyond-12th">Past 12th grade (eg. university)</option>
+        </select>
+
+        <button type="submit" class="signup-btn">Sign up</button>
+    </form>
+</body>
+</html>
