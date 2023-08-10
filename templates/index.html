@@ -4,8 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Not logged in?</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+
+    <style>
+        
+        /* Grey and blue also work nicely here */
+        .nav-btn.signup-btn{
+            background-color: blue;
+        }
+        .nav-btn.login-btn{
+            background-color: green;
+        }
+        
+
+    </style>
 </head>
 <body>
+    
+    <nav>
+        <button class="nav-btn signup-btn" onclick="location.href = '/signup'">
+            <a href="/signup">Sign up</a>
+        </button>
+        
+        <button class="nav-btn login-btn" onclick="location.href = '/login'">
+            <a href="/login">Login</a>
+        </button>
+    </nav>
+    
     <h1>Not logged in?</h1>
 </body>
 </html>

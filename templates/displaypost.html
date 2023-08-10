@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Displaying Post</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+</head>
+<body>
+    <h1>Displaying Post</h1>
+
+    <form method="POST" action="" >
+            <h1> {{post.Title}}</h1>
+            <p> {{post.Body}} </p>
+    </form>
+</body>
+</html>

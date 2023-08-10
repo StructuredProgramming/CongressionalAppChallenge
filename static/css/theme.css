@@ -5,3 +5,23 @@ html{
 body{
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
+
+/* nav styles */
+.nav-btn{
+    padding: 0.5rem;
+    border: none;
+}
+.nav-btn:hover{
+    cursor: pointer;
+}
+
+.nav-btn > a{
+    text-decoration: none;
+    color: white;
+}
+
+nav:has(.nav-btn){
+    display: flex; 
+    flex-direction: row-reverse; 
+    gap: 1.25rem;
+}
