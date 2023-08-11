@@ -4,22 +4,23 @@ html{
 
 body{
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    line-height: 1.2;
 }
 
-/* nav styles */
-.nav-btn{
+button{
     padding: 0.5rem;
     border: none;
 }
-.nav-btn:hover{
+button:hover{
     cursor: pointer;
 }
 
-.nav-btn > a{
+button > a{
     text-decoration: none;
     color: white;
 }
 
+/* nav styles */
 nav:has(.nav-btn){
     display: flex; 
     flex-direction: row-reverse; 

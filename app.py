@@ -38,8 +38,12 @@ class User(db.Model, UserMixin):
 
 class Post(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
+    is_reply = db.Column(db.Boolean, default=False, nullable=True)
+    reply_id = db.Column(db.Integer, default=0, nullable=True)
     Title = db.Column(db.String(100), nullable=False)
     Body = db.Column(db.String(1000), nullable=False)
+
+
 
 
 class SignUpForm(FlaskForm):
@@ -119,7 +123,7 @@ def createpost():
     if f.validate_on_submit():
         title=f.Title.data
         body=f.Body.data
-        post=Post(Title=title, Body=body)
+        post=Post(Title=title, Body=body, is_reply=False, reply_id=0)
         db.session.add(post)
         db.session.commit()
         return redirect(url_for("home"))
@@ -133,7 +137,6 @@ def createpost():
 
 def displaypost(id):
     post=Post.query.get(int(id))
-    print(post)
     return render_template("displaypost.html", post=post)
 
 
