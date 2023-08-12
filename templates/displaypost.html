@@ -6,13 +6,41 @@
     <title>Displaying Post</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+
+    <script src="{{ url_for('static',filename='js/displayPost.js')  }}" defer></script>
+    <script type="module">
+        // const post_id = {{post.id}};
+        const post_id = Number('{{post.id|string}}'); //jinja stuff; I just wrapped it like this to satisfy the linter
+        renderReplies(post_id);
+    </script>
+    <style>
+        ul.replies, ul.replies ul{
+            list-style-type: none;
+        }
+
+        ul.replies li+li{
+            margin-top: 1rem;
+        }
+    </style>
 </head>
 <body>
-    <h1>Displaying Post</h1>
+    <div class="post">
+        <h1> {{post.Title}}</h1>
+        <hr>
+        <p> {{post.Body}} </p>
+        <hr>
+    </div>
 
-    <form method="POST" action="" >
-            <h1> {{post.Title}}</h1>
-            <p> {{post.Body}} </p>
-    </form>
+    <ul class="replies"></ul>
+
+    <div class="post-answer">
+        <form method="POST">
+            {{form.csrf_token}}
+            {{form.body}}
+            <br>
+            {{form.submit}}
+        </form>
+    </div>
+    
 </body>
 </html>
