@@ -26,3 +26,6 @@ nav:has(.nav-btn){
     flex-direction: row-reverse; 
     gap: 1.25rem;
 }
+.nav-btn.logout-btn{
+    background-color: red;
+}

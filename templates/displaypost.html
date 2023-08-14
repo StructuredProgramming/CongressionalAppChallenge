@@ -7,23 +7,37 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
 
-    <script src="{{ url_for('static',filename='js/displayPost.js')  }}" defer></script>
-    <script type="module">
-        // const post_id = {{post.id}};
-        const post_id = Number('{{post.id|string}}'); //jinja stuff; I just wrapped it like this to satisfy the linter
-        renderReplies(post_id);
-    </script>
     <style>
         ul.replies, ul.replies ul{
             list-style-type: none;
         }
 
-        ul.replies li+li{
+        ul.replies li{
             margin-top: 1rem;
+        }
+
+
+        .reply{
+            display: flex;
+            gap: 3rem;
+        }
+        .reply:hover{
+            background-color: hsla(224deg, 27%, 26%, 0.8);
+        }
+        .reply-to-btn{
+            display: none;
+        }
+        .reply:hover > .reply-to-btn{
+            display: block;
         }
     </style>
 </head>
 <body>
+    <nav>
+        <button class="nav-btn logout-btn" onclick="location.href = '/logout'">
+            <a href="/logout">Log out</a>
+        </button>
+    </nav>
     <div class="post">
         <h1> {{post.Title}}</h1>
         <hr>
@@ -31,12 +45,28 @@
         <hr>
     </div>
 
-    <ul class="replies"></ul>
-
+    <ul class="replies">
+        {% for elem in retrieveReplies(post.id).children recursive %}
+        <li>
+            <div class="reply">
+                {{elem.username}}: {{elem.body}}
+                <button class="reply-to-btn">
+                    <a href="/displaypost/{{elem.id}}">Reply to</a>
+                </button>
+            </div>
+            {% if elem.children %}
+            <ul>
+                {{ loop(elem.children) }}
+            </ul>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    
     <div class="post-answer">
         <form method="POST">
             {{form.csrf_token}}
-            {{form.body}}
+            {{form.Body}}
             <br>
             {{form.submit}}
         </form>

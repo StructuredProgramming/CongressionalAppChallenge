@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, jsonify
+from flask import Flask, Blueprint, render_template, url_for, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import (
     UserMixin,
@@ -41,8 +41,13 @@ class Post(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     is_reply = db.Column(db.Boolean, default=False, nullable=True)
     reply_id = db.Column(db.Integer, default=0, nullable=True)
+    owner = db.Column(db.Integer)
     Title = db.Column(db.String(100), default="Untitled")
     Body = db.Column(db.String(1000), nullable=False)
+    upvotes = db.Column(
+        db.Integer, default=0, nullable=True
+    )  # remember to change Title, Body, upvotes and downvotes to be mutable
+    downvotes = db.Column(db.Integer, default=0, nullable=True)
 
 
 class Tag(db.Model, UserMixin):
@@ -54,21 +59,21 @@ class Tag(db.Model, UserMixin):
 
 
 def retrieveReplies(post_id):
-    # User.query.filter_by(username=username.data).all
     post = Post.query.filter_by(id=post_id).first()
-    ans = [(post.Title, post.Body)]
-    for i in Post.query.filter_by(reply_id=post_id, is_reply=True):
-        ans.append(retrieveReplies(i.id))
-    # print(ans)
+    ans = {
+        "title": post.Title,
+        "body": post.Body,
+        "username": User.query.get(post.owner).username,
+        "id": post_id,
+        "children": [],
+    }
+    for reply in Post.query.filter_by(reply_id=post_id, is_reply=True):
+        ans["children"].append(retrieveReplies(reply.id))
     return ans
 
 
-# def returnRepliesJson(post_id): #use this when sending a json
-#     return jsonify(retrieveReplies(post_id))
-
-
 def retrieveTags(post_id):
-    return [i.tag_string for i in Tag.query.filter_by(tag_to=post_id)]
+    return [tag.tag_string for tag in Tag.query.filter_by(tag_to=post_id)]
 
 
 class SignUpForm(FlaskForm):
@@ -110,23 +115,16 @@ class PostQuestionForm(FlaskForm):
         render_kw={"placeholder": "Enter your question here: ", "rows": 10, "cols": 50},
     )
 
-    # Body = StringField(
-    #     validators=[InputRequired(), Length(min=5, max=1000)],
-    #     render_kw={"placeholder": "Enter your question here: "},
-    # )
     submit = SubmitField("Post")
 
 
-class PostAnswerForm(FlaskForm):
-    body = TextAreaField(
+class PostReplyForm(FlaskForm):
+    Body = TextAreaField(
         validators=[InputRequired(), Length(min=5, max=1000)],
-        render_kw={"placeholder": "Type your answer here: ", "rows": 10, "cols": 50},
+        render_kw={"placeholder": "Type your reply here: ", "rows": 10, "cols": 50},
     )
-    # body = StringField(
-    #     validators=[InputRequired(), Length(min=5, max=1000)],
-    #     render_kw={"placeholder": "Type your answer here: "},
-    # )
-    submit = SubmitField("Post Your Answer")
+
+    submit = SubmitField("Post your reply")
 
 
 @app.route("/")
@@ -157,16 +155,23 @@ def logout():
     return redirect(url_for("login"))
 
 
+@app.route("/profile")
+@login_required
+def profile():
+    return render_template("profile.html", user=User.query.get(current_user.id))
+
+
 @app.route("/createpost", methods=["GET", "POST"])
 @login_required
 def createpost():
-    # print(User.query.filter_by(id=current_user.id).first().username)
     user = User.query.filter_by(id=current_user.id).first()
     f = PostQuestionForm()
     if f.validate_on_submit():
         title = f.Title.data
         body = f.Body.data
-        post = Post(Title=title, Body=body, is_reply=False, reply_id=0)
+        post = Post(
+            Title=title, Body=body, is_reply=False, reply_id=0, owner=current_user.id
+        )
         db.session.add(post)
         db.session.commit()
         return redirect(url_for("home"))
@@ -177,28 +182,32 @@ def createpost():
 @login_required
 def displaypost(id):
     post = Post.query.get(int(id))
-    f = PostAnswerForm()
+    f = PostReplyForm()
 
     if f.validate_on_submit():
-        body = f.body.data
-        reply = Post(Body=body, is_reply=True, reply_id=id)
+        body = f.Body.data
+        reply = Post(Body=body, is_reply=True, reply_id=id, owner=current_user.id)
         db.session.add(reply)
         db.session.commit()
-        return render_template("displaypost.html", post=post, form=f)
+        return render_template(
+            "displaypost.html", post=post, form=f, retrieveReplies=retrieveReplies
+        )
     print(f.errors)
-    return render_template("displaypost.html", post=post, form=f)
+    return render_template(
+        "displaypost.html", post=post, form=f, retrieveReplies=retrieveReplies
+    )
 
 
 @app.route("/api/repliesforpost/<int:id>", methods=["GET"])
 @login_required
 def getrepliesforpost(id):
+    print(retrieveReplies(id))
     return jsonify(retrieveReplies(id))
 
 
 @app.route("/home", methods=["GET", "POST"])
 @login_required
 def home():
-    # print(User.query.filter_by(id=current_user.id).first().username)
     user = User.query.filter_by(id=current_user.id).first()
     posts = Post.query.filter_by(is_reply=False).all()
     return render_template("home.html", user=user, posts=posts)
