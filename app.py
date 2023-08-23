@@ -81,7 +81,7 @@ class SignUpForm(FlaskForm):
         validators=[InputRequired(), Length(min=5, max=32)],
         render_kw={"placeholder": "Username"},
     )
-    password = StringField(
+    password = PasswordField(
         validators=[InputRequired(), Length(min=10, max=128)],
         render_kw={"placeholder": "Password"},
     )
@@ -98,7 +98,7 @@ class LogInForm(FlaskForm):
         validators=[InputRequired(), Length(min=5, max=32)],
         render_kw={"placeholder": "Username"},
     )
-    password = StringField(
+    password = PasswordField(
         validators=[InputRequired(), Length(min=10, max=128)],
         render_kw={"placeholder": "Password"},
     )
