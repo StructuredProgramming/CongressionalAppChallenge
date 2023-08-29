@@ -12,6 +12,3 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
-from app import db
-authentication = Blueprint('authentication', __name__, template_folder='templates')
-
