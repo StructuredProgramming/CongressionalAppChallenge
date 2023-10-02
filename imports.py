@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, render_template, url_for, redirect, jsonify
+from flask import Flask, Blueprint, render_template, url_for, redirect, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import (
     UserMixin,
@@ -9,6 +9,6 @@ from flask_login import (
     current_user,
 )
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, HiddenField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt

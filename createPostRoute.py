@@ -1,8 +1,28 @@
 from imports import *
 
 
+from whoosh import index
+from whoosh.fields import Schema, TEXT
+from whoosh.index import create_in
+from whoosh.qparser import QueryParser
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
+
+
+
 def create_post_route(db, login_manager, User, app, Post):
     create_post = Blueprint('create_post', __name__, template_folder='templates')
+
+    # Define the schema for the index
+    schema = Schema(title=TEXT(stored=True), body=TEXT(stored=True))
+
+    # Create the index in a directory named "indexdir"
+    indexdir = "Whoosh_folder"
+    if not index.exists_in(indexdir):
+        ix = create_in(indexdir, schema)
+    else:
+        ix = index.open_dir(indexdir)
 
 
     class PostQuestionForm(FlaskForm):
@@ -30,6 +50,11 @@ def create_post_route(db, login_manager, User, app, Post):
             )
             db.session.add(post)
             db.session.commit()
+            writer = ix.writer()
+
+            writer.add_document(title=f'{post.id}', body=f'{title}\n{body}')
+
+            writer.commit()
             return redirect(url_for("home"))
         return render_template("createpost.html", form=f)
     return create_post

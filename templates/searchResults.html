@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Results</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
 
@@ -63,26 +63,10 @@
 
 </head>
 <body>
-    <nav>
-        <form class="search" action="/search-results" style="display: flex; gap: 1.5rem; margin: auto 6rem auto 6rem;">
-            <input type="text" placeholder="Search for posts..." id="query" name="query" >
-            <button type="submit" style="background: green;">Search</button>
-        </form>
-
-        <button class="nav-btn logout-btn" onclick="location.href = '/logout'">
-            <a href="/logout">Log out</a>
-        </button>    
-    </nav>
-
-    <h1>Home, you are logged in. Hello there {{user.username}}</h1>
-
-    
-    
-    <h2>Recent posts:</h2>
-    <button class="create-post-btn" onclick="location.href = '/createpost'">
-        <a href="/createpost">Create a post</a>
-    </button>
-    <br>
+    <form class="search" action="/search-results" style="display: flex; gap: 1.5rem;">
+        <input type="text" placeholder="Search for posts..." id="query" name="query" >
+        <button type="submit" style="background: green;">Search</button>
+    </form>
     <br>
     <div class="posts-container">
         {% for post in posts %}
@@ -90,17 +74,16 @@
             <a href="{{'/displaypost/'+post.id|string}}" style="text-decoration: none;">{{post.Title}}</a>
             <br>
             <br>
-            <!-- <div class="tags-container">
-                <div class="tag">
+            <div class="tags-container">
+                <!-- <div class="tag">
                     <div class="tag-circle" style="background-color: yellow;"></div>
                     <a href="/">Junk tag 1</a>
                 </div>
                 <div class="tag">
                     <div class="tag-circle" style="background-color: green;"></div>
                     <a href="/">Another one</a>
-                </div>
-            </div> -->
-            <div class="tags-container">
+                </div> -->
+
                 {% for tag in tags %}
                 <div class="tag">
                     <div class="tag-circle" style="background-color: {{tag.tag_color or 'green'}};"></div>
@@ -108,7 +91,6 @@
                 </div>
                 {% endfor %}
             </div>
-            
         </div>
         {% endfor %}
     </div>

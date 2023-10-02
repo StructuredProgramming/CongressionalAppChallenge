@@ -23,9 +23,10 @@ button > a{
 /* nav styles */
 nav:has(.nav-btn){
     display: flex; 
-    flex-direction: row-reverse; 
+    justify-content: flex-end;
     gap: 1.25rem;
 }
+
 .nav-btn.logout-btn{
     background-color: red;
 }
