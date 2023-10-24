@@ -55,7 +55,7 @@ def searchEngineRoute(app, db, Post, User, Tag, login_manager):
         query = request.args.get("query")
         titles = map(int, search(query))
         posts = Post.query.filter(Post.id.in_(titles)).all()
-
+        
         posts_tags = {
             post.id: Tag.query.filter_by(tag_to=post.id)
             for post in posts

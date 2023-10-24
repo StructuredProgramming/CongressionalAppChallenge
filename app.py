@@ -2,6 +2,7 @@ from imports import *
 
 from authenticationRoute import create_auth
 from createPostRoute import create_post_route
+from createNoteRoute import create_note_route
 from viewPost import create_viewPost
 from searchEngine import searchEngineRoute
 # from models import _User, _Post, _Tag
@@ -26,15 +27,22 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), nullable=False, unique=True)
     password = db.Column(db.String(128), nullable=False)
+    credits=db.Column(db.Integer, default=0, nullable=True)
 
 authentication=create_auth(db, login_manager, bcrypt, User, app)
 app.register_blueprint(authentication)
 
+class Vote(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    vote_post = db.Column(db.Integer, default=0, nullable=True)
+    cur = db.Column(db.Boolean, default=False, nullable=True) #False means downvote, True means upvote
+    owner = db.Column(db.Integer)
 
 class Post(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     is_reply = db.Column(db.Boolean, default=False, nullable=True)
     reply_id = db.Column(db.Integer, default=0, nullable=True)
+    is_note = db.Column(db.Boolean, default=False, nullable=True)
     owner = db.Column(db.Integer)
     Title = db.Column(db.String(100), default="Untitled")
     Body = db.Column(db.String(1000), nullable=False)
@@ -42,6 +50,8 @@ class Post(db.Model, UserMixin):
         db.Integer, default=0, nullable=True
     )  # remember to change Title, Body, upvotes and downvotes to be mutable
     downvotes = db.Column(db.Integer, default=0, nullable=True)
+
+
 
 class Tag(db.Model, UserMixin):
     id = db.Column(
@@ -55,6 +65,8 @@ class Tag(db.Model, UserMixin):
 create_post=create_post_route(db, login_manager, User, app, Post)
 app.register_blueprint(create_post)
 
+create_note=create_note_route(db, login_manager, User, app, Post)
+app.register_blueprint(create_note)
 
 view_post=create_viewPost(app, db, Post, User, login_manager)
 app.register_blueprint(view_post)

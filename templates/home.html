@@ -58,6 +58,12 @@
             height: 1rem;
             border-radius: 50%;
         }
+        .vote polygon{
+            fill: grey;
+        }
+        .vote polygon:hover{
+            fill: #999999;
+        }
 
     </style>
 
@@ -82,14 +88,45 @@
     <button class="create-post-btn" onclick="location.href = '/createpost'">
         <a href="/createpost">Create a post</a>
     </button>
+    <button class="create-note-btn" onclick="location.href = '/createnote'">
+        <a href="/createnote">Create notes</a>
+    </button>
     <br>
     <br>
     <div class="posts-container">
         {% for post in posts %}
         <div class="post" onclick="location.href = `{{'/displaypost/'+post.id|string}}`">
-            <a href="{{'/displaypost/'+post.id|string}}" style="text-decoration: none;">{{post.Title}}</a>
+            <div style="display: flex; flex: row; gap: 1rem;">
+                <svg class="vote" viewbox = "0 0 75 270" width="30" height="108">
+                    <polygon points="0,75 25,0 50,75" />
+                    <text x="13" y="122" font-size="50" stroke="white" stroke-width="1px" fill="white">0</text>
+                    <polygon points="0,135 25,200 50,135" />
+                </svg>
+                <a href="{{'/displaypost/'+post.id|string}}" style="text-decoration: none; font-size: 1.5rem;">{{post.Title}}</a>
+            </div>
+            
+
             <br>
             <br>
+            <!-- <div class="vote" style="display: flex; flex-direction: column;">
+                <div class="upvote">
+                    <svg height="50" width="50" viewbox="0 0 100 100">
+                        <polygon points="0,75 25,0 50,75" style="fill:grey;" />
+                    </svg>
+                </div>
+                <span id="vote-count">0</span>
+                <div class="downvote" >
+                    <svg height="50" width="50" viewbox="0 0 100 100">
+                        <polygon points="0,0 25,75 50,0" style="fill:grey;"/>
+                    </svg>
+                </div>
+            </div> -->
+
+            <!-- <svg class="vote" viewbox = "0 0 75 250" width="30" height="100">
+                <polygon points="0,75 25,0 50,75" />
+                <text x="15" y="115" fill="black" font-size="50">0</text>
+                <polygon points="0,125 25,200 50,125" />
+            </svg> -->
             <!-- <div class="tags-container">
                 <div class="tag">
                     <div class="tag-circle" style="background-color: yellow;"></div>

@@ -73,4 +73,24 @@ def create_viewPost(app, db, Post, User, login_manager):
     def getrepliesforpost(id):
         print(retrieveReplies(id))
         return jsonify(retrieveReplies(id))
+
+    @app.route("/api/upvote/<int:post_id>?<int:voteType>", methods=["GET"])
+    @login_required
+    def upvote(id, post_id, voteType):
+        vote=None
+        if len(Vote.query.filter_by(vote_post=post_id, owner=current_user.id).all()):
+            Vote.query.filter_by(vote_post=post_id, owner=current_user.id).delete()
+            db.session.commit()
+        if voteType==1: #upvote
+            vote = Vote(vote_post=post_id, cur=True, owner=current_user.id)
+        elif voteType==0: #downvote
+            vote = Vote(vote_post=post_id, cur=True, owner=current_user.id)
+        else:
+            return "Invalid"
+        db.session.add(vote)
+        db.session.commit()        
+        return Vote.query.filter_by(vote_post=post_id, owner=current_user.id).all()
+
     return view_post
+
+

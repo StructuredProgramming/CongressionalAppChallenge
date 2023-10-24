@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post a question</title>
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/theme.css') }}">
+</head>
+<body>
+    <h1>Post a question</h1>
+
+        <form method="POST" action="" enctype="multipart/form-data">
+            {{form.hidden_tag()}}
+            {{form.Title}}
+            <br>
+            {{form.Body(size=1000)}}
+            <br>
+            {{form.submit}}
+        </form>
+</body>
+</html>

@@ -9,6 +9,6 @@ from flask_login import (
     current_user,
 )
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField, HiddenField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, HiddenField, FileField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt

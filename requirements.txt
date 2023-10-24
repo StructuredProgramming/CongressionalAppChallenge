@@ -7,3 +7,5 @@ wtforms
 email_validator
 whoosh
 sklearn
+appengine-python-standard>=1.0.0
+
