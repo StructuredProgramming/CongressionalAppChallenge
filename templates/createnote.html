@@ -8,13 +8,21 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='css/theme.css') }}">
 </head>
 <body>
-    <h1>Post a question</h1>
+    <h1>Upload notes</h1>
 
         <form method="POST" action="" enctype="multipart/form-data">
             {{form.hidden_tag()}}
-            {{form.Title}}
+            <span>Title: </span> {{form.Title}}
             <br>
+            <br>
+            <p>Choose the notes file you want to upload:</p>
             {{form.Body(size=1000)}}
+            <br>
+
+            <p>Enter a short description below: </p>
+
+            {{form.description(cols="35", rows="10")}}
+            <br>
             <br>
             {{form.submit}}
         </form>

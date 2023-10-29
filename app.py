@@ -43,6 +43,7 @@ class Post(db.Model, UserMixin):
     is_reply = db.Column(db.Boolean, default=False, nullable=True)
     reply_id = db.Column(db.Integer, default=0, nullable=True)
     is_note = db.Column(db.Boolean, default=False, nullable=True)
+    note_file_location = db.Column(db.String(500), nullable=True)
     owner = db.Column(db.Integer)
     Title = db.Column(db.String(100), default="Untitled")
     Body = db.Column(db.String(1000), nullable=False)
@@ -68,7 +69,7 @@ app.register_blueprint(create_post)
 create_note=create_note_route(db, login_manager, User, app, Post)
 app.register_blueprint(create_note)
 
-view_post=create_viewPost(app, db, Post, User, login_manager)
+view_post=create_viewPost(app, db, Post, User, Vote, login_manager)
 app.register_blueprint(view_post)
 
 searchEngine=searchEngineRoute(app, db, Post, User, Tag, login_manager)
@@ -78,6 +79,16 @@ app.register_blueprint(searchEngine)
 
 def retrieveTags(post_id):
     return [tag.tag_string for tag in Tag.query.filter_by(tag_to=post_id)]
+
+def numVotes(post_id):
+        count = 0
+        for vote in Vote.query.filter_by(vote_post=post_id).all():
+            if vote.cur:
+                count += 1
+            else:
+                count -= 1
+
+        return count
 
 @app.route("/")
 def index():
@@ -95,11 +106,12 @@ def profile():
 def home():
     user = User.query.filter_by(id=current_user.id).first()
     posts = Post.query.filter_by(is_reply=False).all()
+    notes = Post.query.filter_by(is_note=True).all()
     posts_tags = {
         post.id: list(Tag.query.filter_by(tag_to=post.id))
         for post in posts
     }
-    return render_template("home.html", user=user, posts=posts, tags=posts_tags)
+    return render_template("home.html", user=user, posts=posts, tags=posts_tags, numVotes=numVotes)
 
 if __name__ == "__main__":
     app.run(debug=True)

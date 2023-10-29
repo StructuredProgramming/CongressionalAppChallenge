@@ -42,6 +42,11 @@ def create_note_route(db, login_manager, User, app, Post):
             # render_kw={"placeholder": "Enter your question here: ", "rows": 10, "cols": 50},
         )
 
+        description = TextAreaField(
+            validators=[InputRequired(), Length(min=5,max=2000)],
+            render_kw={"placeholder": "Write a short description of the contents of these notes"}
+        )
+
         submit = SubmitField("Post")
 
     @app.route("/createnote", methods=["GET", "POST"])
@@ -54,9 +59,10 @@ def create_note_route(db, login_manager, User, app, Post):
             print('also got here')
             title = f.Title.data
             body = f.Body.data
+            desc = f.description.data
             # print(request.files)
             # body = request.files['Note file']
-            print(body)
+            # print(body)
 
             # f.file.data.save('./static/FileStorage/'+filename)
             # ext = (pathlib.Path(body.filename).suffix)
@@ -64,18 +70,18 @@ def create_note_route(db, login_manager, User, app, Post):
             filename = secure_filename(body.filename)
 
             body.save('./static/FileStorage/'+filename)  
-            # post = Post(
-            #     Title=title, Body=filename, is_reply=False, reply_id=0, is_note=True, owner=current_user.id
-            # )
-            # db.session.add(post)
-            # db.session.commit()
-            # writer = ix.writer()
+            post = Post(
+                Title=title, Body=desc, is_reply=False, reply_id=0, is_note=True, owner=current_user.id, note_file_location='./static/FileStorage/'+filename
+            )
+            db.session.add(post)
+            db.session.commit()
+            writer = ix.writer()
 
             print(filename)
 
-            # writer.add_document(title=f'{post.id}', body=f'{title}\n{body}')
+            writer.add_document(title=f'{post.id}', body=f'{title}\n{desc}')
 
-            # writer.commit()
+            writer.commit()
             return redirect(url_for("home"))
         return render_template("createnote.html", form=f)
     return create_note

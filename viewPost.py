@@ -1,5 +1,9 @@
 from imports import *
 
+from flask import send_file
+
+import os
+
 from whoosh import index
 from whoosh.fields import Schema, TEXT
 from whoosh.index import create_in
@@ -8,7 +12,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
-def create_viewPost(app, db, Post, User, login_manager):
+def create_viewPost(app, db, Post, User, Vote, login_manager):
     view_post = Blueprint('view_post', __name__, template_folder='templates')
     # Define the schema for the index
     schema = Schema(title=TEXT(stored=True), body=TEXT(stored=True))
@@ -33,6 +37,16 @@ def create_viewPost(app, db, Post, User, login_manager):
         for reply in Post.query.filter_by(reply_id=post_id, is_reply=True):
             ans["children"].append(retrieveReplies(reply.id))
         return ans
+
+    def numVotes(post_id):
+        count = 0
+        for vote in Vote.query.filter_by(vote_post=post_id).all():
+            if vote.cur:
+                count += 1
+            else:
+                count -= 1
+
+        return count
 
     class PostReplyForm(FlaskForm):
         Body = TextAreaField(
@@ -60,13 +74,19 @@ def create_viewPost(app, db, Post, User, login_manager):
 
             writer.commit()
             return render_template(
-                "displaypost.html", post=post, form=f, retrieveReplies=retrieveReplies
+                "displaypost.html", post=post, form=f, retrieveReplies=retrieveReplies, numVotes=numVotes, send_file=send_file
             )
         print(f.errors)
         return render_template(
-            "displaypost.html", post=post, form=f, retrieveReplies=retrieveReplies
+            "displaypost.html", post=post, form=f, retrieveReplies=retrieveReplies, numVotes=numVotes, send_file=send_file
         )
 
+    @app.route("/downloadNotes/<int:id>", methods=["GET"])
+    @login_required
+    def donwloadNotes(id):
+        post = Post.query.get(id)
+        location = os.path.join(os.getcwd(),post.note_file_location)
+        return send_file(location, as_attachment=True)
 
     @app.route("/api/repliesforpost/<int:id>", methods=["GET"])
     @login_required
@@ -74,9 +94,14 @@ def create_viewPost(app, db, Post, User, login_manager):
         print(retrieveReplies(id))
         return jsonify(retrieveReplies(id))
 
-    @app.route("/api/upvote/<int:post_id>?<int:voteType>", methods=["GET"])
+    @app.route("/api/votesforpost/<int:post_id>", methods=["GET"])
     @login_required
-    def upvote(id, post_id, voteType):
+    def votesforpost(post_id):
+        return f'{numVotes(post_id)}'
+
+    @app.route("/api/upvote/<int:post_id>/<int:voteType>", methods=["GET"])
+    @login_required
+    def upvote(post_id, voteType):
         vote=None
         if len(Vote.query.filter_by(vote_post=post_id, owner=current_user.id).all()):
             Vote.query.filter_by(vote_post=post_id, owner=current_user.id).delete()
@@ -84,12 +109,14 @@ def create_viewPost(app, db, Post, User, login_manager):
         if voteType==1: #upvote
             vote = Vote(vote_post=post_id, cur=True, owner=current_user.id)
         elif voteType==0: #downvote
-            vote = Vote(vote_post=post_id, cur=True, owner=current_user.id)
+            vote = Vote(vote_post=post_id, cur=False, owner=current_user.id)
         else:
             return "Invalid"
         db.session.add(vote)
         db.session.commit()        
-        return Vote.query.filter_by(vote_post=post_id, owner=current_user.id).all()
+        # return Vote.query.filter_by(vote_post=post_id, owner=current_user.id).all()
+        return "Success"
+    
 
     return view_post
 

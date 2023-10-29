@@ -67,6 +67,17 @@
 
     </style>
 
+    <script>
+        function vote(postId, type){
+            fetch(`/api/upvote/${postId}/${type}`);
+        }
+
+        async function updateCount(elemId, postId){
+            const n = await fetch(`/api/votesforpost/${postId}`);
+            document.getElementById(elemId).textContent = await n.text();
+        }
+    </script>
+
 </head>
 <body>
     <nav>
@@ -98,9 +109,9 @@
         <div class="post" onclick="location.href = `{{'/displaypost/'+post.id|string}}`">
             <div style="display: flex; flex: row; gap: 1rem;">
                 <svg class="vote" viewbox = "0 0 75 270" width="30" height="108">
-                    <polygon points="0,75 25,0 50,75" />
-                    <text x="13" y="122" font-size="50" stroke="white" stroke-width="1px" fill="white">0</text>
-                    <polygon points="0,135 25,200 50,135" />
+                    <polygon points="0,75 25,0 50,75" onclick="{event.stopPropagation(); let id = Number('{{post.id}}'); vote(id,1); this.style.fill = this.style.fill == 'grey' ? 'blue' : 'grey'; updateCount(`vote-count-${id}`,id);}"/>
+                    <text x="13" y="122" font-size="50" stroke="white" stroke-width="1px" fill="white" id="vote-count-{{post.id}}">{{numVotes(post.id)}}</text>
+                    <polygon points="0,135 25,200 50,135" onclick="{event.stopPropagation(); let id = Number('{{post.id}}'); vote(id,0); this.style.fill = this.style.fill == 'grey' ? 'blue' : 'grey'; updateCount(`vote-count-${id}`,id);}"/>
                 </svg>
                 <a href="{{'/displaypost/'+post.id|string}}" style="text-decoration: none; font-size: 1.5rem;">{{post.Title}}</a>
             </div>
