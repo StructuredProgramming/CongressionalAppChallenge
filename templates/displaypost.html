@@ -152,6 +152,14 @@
             display: block;
         }
 
+        .reply-to{
+            display: none;
+        }
+
+        .reply:hover > .reply-to{
+            display: block;
+        }
+
     
 
         .vote polygon{
@@ -231,6 +239,7 @@
                     </svg>
                     <!-- <a href="{{'/displaypost/'+post.id|string}}" style="text-decoration: none; font-size: 1.5rem;">{{post.Title}}</a> -->
                 </div>
+               
 
                 <div>
                 <h1 style="color: hsl(233deg 36% 38%);"> {{post.Title}}</h1>
@@ -265,13 +274,20 @@
                     </svg>
                     <!-- <a href="{{'/displaypost/'+post.id|string}}" style="text-decoration: none; font-size: 1.5rem;">{{post.Title}}</a> -->
                 </div>
-                <div class="reply-hover-section">
+                
+                <!-- <div class="reply-hover-section"> -->
                     <div>
                         <strong>{{elem.username}}: </strong>{{elem.body}}
                     </div>
-                    <button class="reply-to-btn" style="height: 2.2rem;">
+                    <!-- <button class="reply-to-btn" style="height: 2.2rem;">
                         <a href="/displaypost/{{elem.id}}">Reply to</a>
-                    </button>
+                    </button> -->
+                <!-- </div> -->
+
+                <div class="reply-to" style="margin-left: auto; padding-right: 2rem;">
+                    <a href="/displaypost/{{elem.id}}" aria-label="reply to">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1.8em" viewBox="0 0 512 512" style="fill: hsl(233deg 36% 38%);"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M8.309 189.836L184.313 37.851C199.719 24.546 224 35.347 224 56.015v80.053c160.629 1.839 288 34.032 288 186.258 0 61.441-39.581 122.309-83.333 154.132-13.653 9.931-33.111-2.533-28.077-18.631 45.344-145.012-21.507-183.51-176.59-185.742V360c0 20.7-24.3 31.453-39.687 18.164l-176.004-152c-11.071-9.562-11.086-26.753 0-36.328z"/></svg>
+                    </a>
                 </div>
                 
             </div>
