@@ -214,7 +214,9 @@
     <nav style="display:inline-block;">
         <div class = "container" style="display:flex;">
             <div class="appname" style="display: inline-block;">
-                <h2 style="font-size:20px; color:hsl(252, 30%, 100%);">EagleConnect</h2>
+                <h2 style="font-size: 20px; color:hsl(252, 30%, 100%);">
+                    <a href="/home" style="text-decoration: none; cursor: pointer; color: inherit;">EagleConnect</a>
+                </h2>
             </div>
             <form class="search" action="/search-results" style="display: inline-block;">
                 <i class = "uil uil-search"></i>
@@ -249,7 +251,7 @@
     <br>
     <br>
    
-    <center><h1 style="color:hsl(233, 95%, 15%); font-size: 50px;  font-family: 'Montserrat', sans-serif;">Recent Posts:</h1></center>
+    <h1 style="color: hsl(233, 95%, 15%); text-align: center; font-size: 50px;  font-family: 'Montserrat', sans-serif;">Recommended Posts:</h1>
     <br>
     <br>
     <br>
@@ -265,41 +267,13 @@
                     <text x="13" y="122" font-size="50" stroke="hsl(233deg 36% 38%)" stroke-width="1px" fill="hsl(233deg 36% 38%)" id="vote-count-{{post.id}}" style="color: hsl(233deg 36% 38%);">{{numVotes(post.id)}}</text>
                     <polygon points="0,135 25,200 50,135" onclick="{event.stopPropagation(); let id = Number('{{post.id}}'); vote(id,0); this.style.fill = this.style.fill == 'blue' ? 'blue' : 'blue'; updateCount(`vote-count-${id}`,id);}"/>
                 </svg>
-                <a href="{{'/displaypost/'+post.id|string}}" style="text-decoration: none; font-size: 1.5rem;font-family: 'Montserrat', sans-serif; font-weight:600; color: hsl(233deg 36% 38%);">{{post.Title}}</a>
+                <a href="{{'/displaypost/'+post.id|string}}" style="text-decoration: none; font-size: 1.5rem; font-family: 'Montserrat', sans-serif; font-weight: 600; color: hsl(233deg 36% 38%);">{{post.Title}}</a>
             </div>
             
 
             <br>
             <br>
-            <!-- <div class="vote" style="display: flex; flex-direction: column;">
-                <div class="upvote">
-                    <svg height="50" width="50" viewbox="0 0 100 100">
-                        <polygon points="0,75 25,0 50,75" style="fill:grey;" />
-                    </svg>
-                </div>
-                <span id="vote-count">0</span>
-                <div class="downvote" >
-                    <svg height="50" width="50" viewbox="0 0 100 100">
-                        <polygon points="0,0 25,75 50,0" style="fill:grey;"/>
-                    </svg>
-                </div>
-            </div> -->
 
-            <!-- <svg class="vote" viewbox = "0 0 75 250" width="30" height="100">
-                <polygon points="0,75 25,0 50,75" />
-                <text x="15" y="115" fill="black" font-size="50">0</text>
-                <polygon points="0,125 25,200 50,125" />
-            </svg> -->
-            <!-- <div class="tags-container">
-                <div class="tag">
-                    <div class="tag-circle" style="background-color: yellow;"></div>
-                    <a href="/">Junk tag 1</a>
-                </div>
-                <div class="tag">
-                    <div class="tag-circle" style="background-color: green;"></div>
-                    <a href="/">Another one</a>
-                </div>
-            </div> -->
             <div class="tags-container">
                 
                 <div class="tag">

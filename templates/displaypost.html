@@ -183,7 +183,9 @@
     <nav>
         <div class = "container">
             <div class="appname" style="display: inline-block;">
-                <h2 style="font-size:23px; color:hsl(252, 30%, 100%);">EagleConnect</h2>
+                <h2 style="font-size:23px; color:hsl(252, 30%, 100%);">
+                    <a href="/home" style="text-decoration: none; cursor: pointer; color: inherit;">EagleConnect</a>
+                </h2>
             </div>
             <div class = "createpost" style = "display: inline-block;">
                 <button class="create-post-btn"  style="font-family: 'Poppins', sans-serif;" onclick="location.href = '/createpost'">
@@ -195,11 +197,7 @@
                     <a href="/createnote">Create notes</a>
                 </button>
             </div>
-            <div class = "home" style = "display: inline-block;">
-                <button class="home-btn"  style="font-family: 'Poppins', sans-serif;" onclick="location.href = '/home'">
-                    <a href="/home">Home</a>
-                </button>  
-            </div>
+
 
         </div>
 
@@ -220,27 +218,35 @@
     
 
     <div class="post">
-        <center>
-        <div class="postpart1" style="display: flex; gap: 1.5rem; width:50%; background: hsl(252, 30%, 100%); padding: 1.5rem; border-radius: 1rem; transition: all 400ms ease; height: fit-content; box-shadow: 0 0 20px rgba(8,7,16,0.6);">
+        <!-- <center > -->
+        <div style="display: flex; align-items: center; justify-content: center;">
         
-        <div style="gap: 1rem;">
-            <svg class="vote" viewbox = "0 0 75 270" width="30" height="108">
-                <polygon points="0,75 25,0 50,75" onclick="{let id = Number('{{post.id}}'); vote(id,1); this.style.fill = this.style.fill == 'grey' ? 'blue' : 'grey'; updateCount(`vote-count-${id}`,id);}"/>
-                <text x="13" y="122" font-size="50" stroke="hsl(233deg 36% 38%)" stroke-width="1px" fill="hsl(233deg 36% 38%)" id="vote-count-{{post.id}}">{{numVotes(post.id)}}</text>
-                <polygon points="0,135 25,200 50,135" onclick="{let id = Number('{{post.id}}'); vote(id,0); this.style.fill = this.style.fill == 'grey' ? 'blue' : 'grey'; updateCount(`vote-count-${id}`,id);}"/>
-            </svg>
-            <!-- <a href="{{'/displaypost/'+post.id|string}}" style="text-decoration: none; font-size: 1.5rem;">{{post.Title}}</a> -->
-        </div>
+            <div class="postpart1" style="display: flex; gap: 1.5rem; width:50%; background: hsl(252, 30%, 100%); padding: 1.5rem; border-radius: 1rem; transition: all 400ms ease; height: fit-content; box-shadow: 0 0 20px rgba(8,7,16,0.6);">
+            
+                <div style="gap: 1rem;">
+                    <svg class="vote" viewbox = "0 0 75 270" width="30" height="108">
+                        <polygon points="0,75 25,0 50,75" onclick="{let id = Number('{{post.id}}'); vote(id,1); this.style.fill = this.style.fill == 'grey' ? 'blue' : 'grey'; updateCount(`vote-count-${id}`,id);}"/>
+                        <text x="13" y="122" font-size="50" stroke="hsl(233deg 36% 38%)" stroke-width="1px" fill="hsl(233deg 36% 38%)" id="vote-count-{{post.id}}">{{numVotes(post.id)}}</text>
+                        <polygon points="0,135 25,200 50,135" onclick="{let id = Number('{{post.id}}'); vote(id,0); this.style.fill = this.style.fill == 'grey' ? 'blue' : 'grey'; updateCount(`vote-count-${id}`,id);}"/>
+                    </svg>
+                    <!-- <a href="{{'/displaypost/'+post.id|string}}" style="text-decoration: none; font-size: 1.5rem;">{{post.Title}}</a> -->
+                </div>
 
-        <div>
-        <h1 style="color: hsl(233deg 36% 38%);"> {{post.Title}}</h1>
-        <p style="color: hsl(233deg 36% 38%);"> {{post.Body}} </p></div>
-        </div></center>
+                <div>
+                <h1 style="color: hsl(233deg 36% 38%);"> {{post.Title}}</h1>
+                <p style="color: hsl(233deg 36% 38%);"> {{post.Body}} </p></div>
+            </div>
+        </div>
+    <!-- </center> -->
 
         {% if post.is_note %}
             <br>
             <br>
-            <center><a href="/downloadNotes/{{post.id}}" style="text-decoration:none;"><button style="font-family:'Poppins', sans-serif; font-weight:500; font-size: 20px;background:hsl(252, 75%, 60%); width:52%; border-radius: 1rem;padding:1.5rem; box-shadow: 0 0 20px rgba(8,7,16,0.6);">Click to download the notes!</button></a></center>
+            <center>
+                <a href="/downloadNotes/{{post.id}}" style="text-decoration:none;">
+                    <button style="font-family:'Poppins', sans-serif; font-weight:500; font-size: 20px;background:hsl(252, 75%, 60%); width:52%; border-radius: 1rem;padding:1.5rem; box-shadow: 0 0 20px rgba(8,7,16,0.6);">Click to download the notes!</button>
+                </a>
+            </center>
         {% endif %}
     </div>
     <br>
