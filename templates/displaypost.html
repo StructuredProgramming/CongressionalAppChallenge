@@ -4,10 +4,125 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Displaying Post</title>
-
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap');
+        
+        :root {
+            --color-dark: hsl(252, 30%, 17%);
+            --color-light: hsl(224, 72%, 85%);
+            --border-radius: 2rem;
+            --btn-padding: 0.6rem 2rem;
+            --search-padding: 0.6rem 1rem;
+        }
+        
+        body {
+            font-family: "Poppins", sans-serif;
+            color: var(--color-dark);
+            background: var(--color-light);
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .container button{
+            padding: var(--btn-padding);
+            font-weight: 500;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 300ms ease;
+            font-size: 0.9rem;
+        }
+
+        .button:hover{
+            opacity: 0.8;
+        }
+
+        .create-post-btn{
+            background: hsl(252, 75%, 60%);
+            color: white;
+            
+        }
+
+        .create-note-btn{
+            background: hsl(252, 75%, 60%);
+            color: white;
+            
+        }
+
+        .home-btn{
+            background-color: hsl(0, 95%, 65%);
+            
+        }
+
+        .search-btn{
+            background-color: hsl(120, 95%, 65%);
+            
+        }
+
+        nav {
+            width: 110%;
+            background: hsl(252, 30%, 100%);
+            padding: 0.7rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+        nav .container {
+            display: flex;
+            align-items: center;
+        }
+
+        nav .search {
+            background: var(--color-light);
+            border-radius: var(--border-radius);
+            padding: var(--search-padding);
+            margin-left: 2rem;
+        }
+
+        nav .search input[type="text"] {
+            background: transparent;
+            width: 30vw;
+            margin-left: 1rem;
+            font-size: 0.9rem;
+            color: var(--color-dark);
+        }
+
+        nav .create-note-btn{
+            display: flex;
+            align-items: center;
+            margin-left: 2rem;
+          
+        }
+
+        nav .create-post-btn{
+            display: flex;
+            align-items: center;
+            margin-left: 2rem;
+         
+        }
+
+        nav .home-btn{
+            display: flex;
+            align-items: center;
+            margin-left: 2rem;
+          
+        }
+        
+        
+        
+        
+        
+        
+        
+        
         ul.replies, ul.replies ul{
             list-style-type: none;
         }
@@ -21,12 +136,11 @@
             display: grid;
             grid-template-columns: 40px 1fr;
             /* grid-template-rows: auto; */
-            gap: 3rem;
         }
         .reply-hover-section{
             display: grid;
             grid-template-columns: 1fr 5rem;
-            gap: 3rem;
+            
         }
         .reply-hover-section:hover{
             background-color: hsla(224deg, 27%, 26%, 0.8);
@@ -41,15 +155,14 @@
     
 
         .vote polygon{
-            fill: grey;
+            fill: rgb(120, 145, 246);
         }
         .vote polygon:hover{
-            fill: #999999;
+            fill: #4540d7;
         }
 
         .post{
-            display: grid;
-            grid-template-columns: 40px 1fr;
+           display: grid;
         }
 
 
@@ -68,45 +181,87 @@
 </head>
 <body>
     <nav>
-        <button class="nav-btn logout-btn" onclick="location.href = '/logout'">
-            <a href="/logout">Log out</a>
-        </button>
+        <div class = "container">
+            <div class="appname" style="display: inline-block;">
+                <h2>AppName</h2>
+            </div>
+            <div class = "createpost" style = "display: inline-block;">
+                <button class="create-post-btn"  style="font-family: 'Poppins', sans-serif;" onclick="location.href = '/createpost'">
+                    <a href="/createpost">Create a post</a>
+                </button>
+            </div>
+            <div class = "createnote" style = "display: inline-block;">
+                <button class="create-note-btn"  style="font-family: 'Poppins', sans-serif;" onclick="location.href = '/createnote'">
+                    <a href="/createnote">Create notes</a>
+                </button>
+            </div>
+            <div class = "home" style = "display: inline-block;">
+                <button class="home-btn"  style="font-family: 'Poppins', sans-serif;" onclick="location.href = '/home'">
+                    <a href="/home">Home</a>
+                </button>  
+            </div>
+
+        </div>
+
+
+          
     </nav>
-    <h1> {{post.Title}}</h1>
-    <hr>
+
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    
+    
+    
+    
+
     <div class="post">
-        <div style="display: flex; flex: row; gap: 1rem;">
+        <center>
+        <div class="postpart1" style="display: flex; gap: 1.5rem; width:50%; background: hsl(252, 30%, 100%); padding: 1.5rem; border-radius: 1rem; transition: all 400ms ease; height: fit-content;">
+        
+        <div style="gap: 1rem;">
             <svg class="vote" viewbox = "0 0 75 270" width="30" height="108">
                 <polygon points="0,75 25,0 50,75" onclick="{let id = Number('{{post.id}}'); vote(id,1); this.style.fill = this.style.fill == 'grey' ? 'blue' : 'grey'; updateCount(`vote-count-${id}`,id);}"/>
-                <text x="13" y="122" font-size="50" stroke="white" stroke-width="1px" fill="white" id="vote-count-{{post.id}}">{{numVotes(post.id)}}</text>
+                <text x="13" y="122" font-size="50" stroke="hsl(233deg 36% 38%)" stroke-width="1px" fill="hsl(233deg 36% 38%)" id="vote-count-{{post.id}}">{{numVotes(post.id)}}</text>
                 <polygon points="0,135 25,200 50,135" onclick="{let id = Number('{{post.id}}'); vote(id,0); this.style.fill = this.style.fill == 'grey' ? 'blue' : 'grey'; updateCount(`vote-count-${id}`,id);}"/>
             </svg>
             <!-- <a href="{{'/displaypost/'+post.id|string}}" style="text-decoration: none; font-size: 1.5rem;">{{post.Title}}</a> -->
         </div>
-        
-        <p> {{post.Body}} </p>
+
+        <div>
+        <h1 style="color: hsl(233deg 36% 38%);"> {{post.Title}}</h1>
+        <p style="color: hsl(233deg 36% 38%);"> {{post.Body}} </p></div>
+        </div></center>
 
         {% if post.is_note %}
-            <a href="/downloadNotes/{{post.id}}">Link to download the notes</a>
+            <br>
+            <br>
+            <center><a href="/downloadNotes/{{post.id}}" style="text-decoration:none;"><button style="font-family:'Poppins', sans-serif; font-weight:500; font-size: 20px;background:hsl(252, 75%, 60%); width:52%; border-radius: 1rem;padding:1.5rem;">Click to download the notes!</button></a></center>
         {% endif %}
     </div>
-    <hr>
-
-    <ul class="replies">
+    <br>
+    <br>
+    <br>
+<center>
+    <ul class="replies" style="width:50%;">
         {% for elem in retrieveReplies(post.id).children recursive %}
         <li>
-            <div class="reply">
-                <div style="display: flex; flex: row; gap: 1rem;">
-                    <svg class="vote" viewbox = "0 0 75 270" width="30" height="108">
+            <div class="reply" style="display:flex; align-items:center;background: hsl(252, 30%, 100%); padding: 0.6rem; border-radius: 1rem; height:fit-content;">
+                <div style="margin-right: 1rem;">
+                    <svg class="vote" viewbox = "0 0 75 270" width="22.5" height="91">
                         <polygon points="0,75 25,0 50,75" onclick="{let id = Number('{{elem.id}}'); vote(id,1); this.style.fill = this.style.fill == 'grey' ? 'blue' : 'grey'; updateCount(`vote-count-${id}`,id);}"/>
-                <text x="13" y="122" font-size="50" stroke="white" stroke-width="1px" fill="white" id="vote-count-{{elem.id}}">{{numVotes(elem.id)}}</text>
+                <text x="13" y="122" font-size="50" stroke="hsl(233deg 36% 38%)" stroke-width="1px" fill="hsl(233deg 36% 38%)" id="vote-count-{{elem.id}}">{{numVotes(elem.id)}}</text>
                 <polygon points="0,135 25,200 50,135" onclick="{let id = Number('{{elem.id}}'); vote(id,0); this.style.fill = this.style.fill == 'grey' ? 'blue' : 'grey'; updateCount(`vote-count-${id}`,id);}"/>
                     </svg>
                     <!-- <a href="{{'/displaypost/'+post.id|string}}" style="text-decoration: none; font-size: 1.5rem;">{{post.Title}}</a> -->
                 </div>
                 <div class="reply-hover-section">
                     <div>
-                        {{elem.username}}: {{elem.body}}
+                        <strong>{{elem.username}}: </strong>{{elem.body}}
                     </div>
                     <button class="reply-to-btn" style="height: 2.2rem;">
                         <a href="/displaypost/{{elem.id}}">Reply to</a>
@@ -122,15 +277,21 @@
         </li>
         {% endfor %}
     </ul>
-    
+</center>
+    <br>
+    <br>
+    <center>
     <div class="post-answer">
-        <form method="POST">
+        <form method="POST" style="background-color:rgb(120, 145, 246);  width:50%; border-radius:2rem; padding: 1.8rem;">
             {{form.csrf_token}}
-            {{form.Body}}
+            {{form.Body(style="width:95%; background:hsl(252, 30%, 100%); font-family:'Poppins', sans-serif; border-radius: 1.5rem; padding: 0.5rem; color:gray; font-size:15px; ")}}
             <br>
-            {{form.submit}}
+            <br>
+            
+            {{form.submit(style="width:95%; background:hsl(233deg 36% 38%); font-family:'Poppins', sans-serif; font-weight:500; border-radius:1.5rem; padding:0.5rem; font-size: 20px;")}}
         </form>
     </div>
+</center>
     
 </body>
 </html>

@@ -6,6 +6,6 @@ flask_wtf
 wtforms
 email_validator
 whoosh
-sklearn
+scikit-learn
 appengine-python-standard>=1.0.0
 

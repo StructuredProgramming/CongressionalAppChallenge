@@ -4,28 +4,153 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
 
     <style>
-        .posts-container{
-            display: grid;
-            grid-template-columns: 1fr;
-            row-gap: 1rem;
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap');
+        :root {
+            --color-dark: hsl(252, 30%, 17%);
+            --color-light: hsl(224, 72%, 85%);
+            --border-radius: 2rem;
+            --btn-padding: 0.6rem 2rem;
+            --search-padding: 0.6rem 1rem;
         }
-        .post{
-            background-color: hsl(246deg, 28%, 15%);
-            padding: 0.75rem;
+        *, *::before, *::after{
+            margin: 0;
+            padding: 0;
+            outline: 0;
+            box-sizing: border-box;
+            text-decoration: none;
+            list-style: none;
+            border: none;
         }
-        .post:hover{
-            background-color: hsl(246deg,28%,22%);
+
+        body {
+            font-family: "Poppins", sans-serif;
+            color: var(--color-dark);
+            background: var(--color-light);
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .container button{
+            padding: var(--btn-padding);
+            font-weight: 500;
+            border-radius: var(--border-radius);
             cursor: pointer;
+            transition: all 300ms ease;
+            font-size: 0.9rem;
+        }
+
+        .button:hover{
+            opacity: 0.8;
         }
 
         .create-post-btn{
-            background-color: green;
-            padding: 0.75rem;
+            background: hsl(252, 75%, 60%);
+            color: white;
+            
         }
+
+        .create-note-btn{
+            background: hsl(252, 75%, 60%);
+            color: white;
+            
+        }
+
+        .logout-btn{
+            background-color: hsl(0, 95%, 65%);
+            
+        }
+
+        .search-btn{
+            background-color: hsl(120, 95%, 65%);
+            
+        }
+
+        nav {
+            width: 100%;
+            background: hsl(252, 30%, 100%);
+            padding: 0.7rem 0;
+            position: fixed;
+            top: 0;
+            z-index: 10;
+        }
+
+        nav .container {
+            display: flex;
+            align-items: center;
+        }
+
+        nav .search {
+            background: var(--color-light);
+            border-radius: var(--border-radius);
+            padding: var(--search-padding);
+            margin-left: 2rem;
+        }
+
+        nav .search input[type="text"] {
+            background: transparent;
+            width: 30vw;
+            margin-left: 1rem;
+            font-size: 0.9rem;
+            color: var(--color-dark);
+        }
+
+        nav .create-note-btn{
+            display: flex;
+            align-items: center;
+            margin-left: 2rem;
+          
+        }
+
+        nav .create-post-btn{
+            display: flex;
+            align-items: center;
+            margin-left: 2rem;
+         
+        }
+
+        nav .logout-btn{
+            display: flex;
+            align-items: center;
+            margin-left: 2rem;
+          
+        }
+
+      
+
+      
+
+
+
+
+        .posts-container{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        .post{
+            background-color: hsl(252, 30%, 100%);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            gap: 1.5rem;
+            height: fit-content;
+            box-shadow: 0 0 30px rgba(8,7,16,0.6);
+            transition: all 400ms ease;
+        }
+        .post:hover{
+            background-color: hsl(248, 43%, 83%);
+            cursor: pointer;
+            margin-top: -0.5rem;
+        }
+
+        
 
 
 
@@ -36,7 +161,8 @@
 
         .tag{
             padding: 0.25rem;
-            background-color: hsl(246deg,45%,40%);
+            background-color: hsl(233, 53%, 75%);
+            color: hsl(232, 66%, 20%);
             border-radius: 7px;
 
             display: flex;
@@ -59,10 +185,10 @@
             border-radius: 50%;
         }
         .vote polygon{
-            fill: grey;
+            fill: rgb(120, 145, 246);
         }
         .vote polygon:hover{
-            fill: #999999;
+            fill: #4540d7;
         }
 
     </style>
@@ -80,40 +206,67 @@
 
 </head>
 <body>
-    <nav>
-        <form class="search" action="/search-results" style="display: flex; gap: 1.5rem; margin: auto 6rem auto 6rem;">
-            <input type="text" placeholder="Search for posts..." id="query" name="query" >
-            <button type="submit" style="background: green;">Search</button>
-        </form>
+    
+  
+        
+ 
 
-        <button class="nav-btn logout-btn" onclick="location.href = '/logout'">
-            <a href="/logout">Log out</a>
-        </button>    
+    <nav style="display:inline-block;">
+        <div class = "container">
+            <div class="appname" style="display: inline-block;">
+                <h2>AppName</h2>
+            </div>
+            <form class="search" action="/search-results" style="display: inline-block;">
+                <i class = "uil uil-search"></i>
+                <input type="text" placeholder="Search for posts..." id="query" name="query" >
+                <button class = "search-btn" type="submit" style="font-family: 'Poppins', sans-serif;">Search</button>
+            </form>
+            <div class = "createpost" style = "display: inline-block;">
+                <button class="create-post-btn"  style="font-family: 'Poppins', sans-serif;" onclick="location.href = '/createpost'">
+                    <a href="/createpost">Create a post</a>
+                </button>
+            </div>
+            <div class = "createnote" style = "display: inline-block;">
+                <button class="create-note-btn"  style="font-family: 'Poppins', sans-serif;" onclick="location.href = '/createnote'">
+                    <a href="/createnote">Create notes</a>
+                </button>
+            </div>
+            <div class = "logout" style = "display: inline-block;">
+                <button class="logout-btn"  style="font-family: 'Poppins', sans-serif;" onclick="location.href = '/logout'">
+                    <a href="/logout">Log out</a>
+                </button>  
+            </div>
+
+        </div>
+
+
+          
     </nav>
 
-    <h1>Home, you are logged in. Hello there {{user.username}}</h1>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+   
+    <center><h1 style="color:hsl(233, 95%, 15%); font-size: 50px;  font-family: 'Montserrat', sans-serif;">Recent Posts:</h1></center>
+    <br>
+    <br>
+    <br>
 
+ 
     
-    
-    <h2>Recent posts:</h2>
-    <button class="create-post-btn" onclick="location.href = '/createpost'">
-        <a href="/createpost">Create a post</a>
-    </button>
-    <button class="create-note-btn" onclick="location.href = '/createnote'">
-        <a href="/createnote">Create notes</a>
-    </button>
-    <br>
-    <br>
     <div class="posts-container">
         {% for post in posts %}
         <div class="post" onclick="location.href = `{{'/displaypost/'+post.id|string}}`">
             <div style="display: flex; flex: row; gap: 1rem;">
                 <svg class="vote" viewbox = "0 0 75 270" width="30" height="108">
-                    <polygon points="0,75 25,0 50,75" onclick="{event.stopPropagation(); let id = Number('{{post.id}}'); vote(id,1); this.style.fill = this.style.fill == 'grey' ? 'blue' : 'grey'; updateCount(`vote-count-${id}`,id);}"/>
-                    <text x="13" y="122" font-size="50" stroke="white" stroke-width="1px" fill="white" id="vote-count-{{post.id}}">{{numVotes(post.id)}}</text>
-                    <polygon points="0,135 25,200 50,135" onclick="{event.stopPropagation(); let id = Number('{{post.id}}'); vote(id,0); this.style.fill = this.style.fill == 'grey' ? 'blue' : 'grey'; updateCount(`vote-count-${id}`,id);}"/>
+                    <polygon points="0,75 25,0 50,75" onclick="{event.stopPropagation(); let id = Number('{{post.id}}'); vote(id,1); this.style.fill = this.style.fill == 'blue' ? 'blue' : 'blue'; updateCount(`vote-count-${id}`,id);}"/>
+                    <text x="13" y="122" font-size="50" stroke="hsl(233deg 36% 38%)" stroke-width="1px" fill="hsl(233deg 36% 38%)" id="vote-count-{{post.id}}" style="color: hsl(233deg 36% 38%);">{{numVotes(post.id)}}</text>
+                    <polygon points="0,135 25,200 50,135" onclick="{event.stopPropagation(); let id = Number('{{post.id}}'); vote(id,0); this.style.fill = this.style.fill == 'blue' ? 'blue' : 'blue'; updateCount(`vote-count-${id}`,id);}"/>
                 </svg>
-                <a href="{{'/displaypost/'+post.id|string}}" style="text-decoration: none; font-size: 1.5rem;">{{post.Title}}</a>
+                <a href="{{'/displaypost/'+post.id|string}}" style="text-decoration: none; font-size: 1.5rem;font-family: 'Montserrat', sans-serif; font-weight:600; color: hsl(233deg 36% 38%);">{{post.Title}}</a>
             </div>
             
 
@@ -152,7 +305,7 @@
                 {% for tag in tags %}
                 <div class="tag">
                     <div class="tag-circle" style="background-color: {{tag.tag_color or 'green'}};"></div>
-                    <a href="/">{{tag.tag_string or "Empty tag"}}</a>
+                    <a href="/" style="color:hsl(233, 67%, 24%);font-weight:500;font-family:'Montserrat', sans-serif;">{{tag.tag_string or "Empty tag"}}</a>
                 </div>
                 {% endfor %}
             </div>

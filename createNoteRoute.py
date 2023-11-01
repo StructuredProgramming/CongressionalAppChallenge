@@ -34,7 +34,7 @@ def create_note_route(db, login_manager, User, app, Post):
     class PostNoteForm(FlaskForm):
         Title = StringField(
             validators=[InputRequired(), Length(min=5, max=100)],
-            render_kw={"placeholder": "Enter the title here"},
+            render_kw={"placeholder": "Title your notes resource"},
         )
         Body = FileField(
             'Note File',
@@ -44,7 +44,7 @@ def create_note_route(db, login_manager, User, app, Post):
 
         description = TextAreaField(
             validators=[InputRequired(), Length(min=5,max=2000)],
-            render_kw={"placeholder": "Write a short description of the contents of these notes"}
+            render_kw={"placeholder": "Write a description of the content of these notes"}
         )
 
         submit = SubmitField("Post")

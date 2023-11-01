@@ -12,6 +12,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
+import pickle
+
 def create_viewPost(app, db, Post, User, Vote, login_manager):
     view_post = Blueprint('view_post', __name__, template_folder='templates')
     # Define the schema for the index
@@ -61,8 +63,14 @@ def create_viewPost(app, db, Post, User, Vote, login_manager):
     @login_required
     def displaypost(id):
         post = Post.query.get(int(id))
-        f = PostReplyForm()
+        #User.query.filter_by(id=current_user.id).first()
+        
+        User.query.filter_by(id=current_user.id).first().add_post_viewed(id)
+        db.session.commit()
 
+        #print(User.query.filter_by(id=current_user.id).first().get_posts_viewed())
+        f = PostReplyForm()
+        
         if f.validate_on_submit():
             body = f.Body.data
             reply = Post(Body=body, is_reply=True, reply_id=id, owner=current_user.id)
@@ -119,5 +127,3 @@ def create_viewPost(app, db, Post, User, Vote, login_manager):
     
 
     return view_post
-
-
