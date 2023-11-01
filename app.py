@@ -5,8 +5,6 @@ from createPostRoute import create_post_route
 from createNoteRoute import create_note_route
 from viewPost import create_viewPost
 from searchEngine import searchEngineRoute
-from recommendRoute import recommendRoute
-
 # from models import _User, _Post, _Tag
 
 app = Flask(__name__)
@@ -30,16 +28,6 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(32), nullable=False, unique=True)
     password = db.Column(db.String(128), nullable=False)
     credits=db.Column(db.Integer, default=0, nullable=True)
-    posts_viewed_json = db.Column(db.String, default="[]")  # Store JSON representation of the list
-
-
-    def get_posts_viewed(self):
-        return json.loads(self.posts_viewed_json)
-
-    def add_post_viewed(self, post_id):
-        posts_viewed = self.get_posts_viewed()
-        posts_viewed.append(post_id)
-        self.posts_viewed_json = json.dumps(posts_viewed)
 
 authentication=create_auth(db, login_manager, bcrypt, User, app)
 app.register_blueprint(authentication)
@@ -87,8 +75,7 @@ app.register_blueprint(view_post)
 searchEngine=searchEngineRoute(app, db, Post, User, Tag, login_manager)
 app.register_blueprint(searchEngine)
 
-recommender=recommendRoute(app, db, Post, User, Tag, login_manager)
-app.register_blueprint(recommender)
+
 
 def retrieveTags(post_id):
     return [tag.tag_string for tag in Tag.query.filter_by(tag_to=post_id)]

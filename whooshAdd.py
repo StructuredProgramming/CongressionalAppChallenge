@@ -18,9 +18,9 @@ else:
 
 
 writer = ix.writer()
-writer.add_document(title="1", body="World War 2 started in 1964, during which the Allies fought the Axis Powers.")
-writer.add_document(title="2", body="The brain is an organ in your head. It helps you think and perform various tasks.")
-writer.add_document(title="3", body="The topelitz square is one of the most difficult and intricate mathematics problems with various proposed solutions.")
-writer.add_document(title="4", body="The travelling salesman problem is one of the most difficult and complex computer science problems.")
+writer.add_document(title="Document 1", body="World War 2 started in 1964, during which the Allies fought the Axis Powers.")
+writer.add_document(title="Document 2", body="The brain is an organ in your head. It helps you think and perform various tasks.")
+writer.add_document(title="Document 3", body="The topelitz square is one of the most difficult and intricate mathematics problems with various proposed solutions.")
+writer.add_document(title="Document 4", body="The travelling salesman problem is one of the most difficult and complex computer science problems.")
 
 writer.commit()
