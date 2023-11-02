@@ -259,6 +259,12 @@
                     <div class="tag-circle" style="background-color: orange;"></div>
                     <a href="/" style="color:hsl(233, 67%, 24%);font-weight:500;font-family:'Montserrat', sans-serif;">Tag 3</a>
                 </div>
+                {% if post.is_note %}
+                <div class="tag">
+                    <div class="tag-circle" style="background-color: blue;"></div>
+                    <a href="/" style="color:hsl(233, 67%, 24%);font-weight:500;font-family:'Montserrat', sans-serif;">Notes</a>
+                </div>
+                {% endif %}
             </div>
         </div>
         {% endfor %}

@@ -272,17 +272,12 @@
                 <text x="13" y="122" font-size="50" stroke="hsl(233deg 36% 38%)" stroke-width="1px" fill="hsl(233deg 36% 38%)" id="vote-count-{{elem.id}}">{{numVotes(elem.id)}}</text>
                 <polygon points="0,135 25,200 50,135" onclick="{let id = Number('{{elem.id}}'); vote(id,0); this.style.fill = this.style.fill == 'grey' ? 'blue' : 'grey'; updateCount(`vote-count-${id}`,id);}"/>
                     </svg>
-                    <!-- <a href="{{'/displaypost/'+post.id|string}}" style="text-decoration: none; font-size: 1.5rem;">{{post.Title}}</a> -->
                 </div>
                 
-                <!-- <div class="reply-hover-section"> -->
                     <div>
                         <strong>{{elem.username}}: </strong>{{elem.body}}
                     </div>
-                    <!-- <button class="reply-to-btn" style="height: 2.2rem;">
-                        <a href="/displaypost/{{elem.id}}">Reply to</a>
-                    </button> -->
-                <!-- </div> -->
+                    
 
                 <div class="reply-to" style="margin-left: auto; padding-right: 2rem;">
                     <a href="/displaypost/{{elem.id}}" aria-label="reply to">
